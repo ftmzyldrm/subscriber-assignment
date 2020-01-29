@@ -12,4 +12,10 @@ public interface SubscriberService {
     void addToCache(Subscriber subscriber);
 
     void updateCache(Subscriber subscriber);
+
+    void deleteCache(Long id);
+
+    Subscriber getById(Long id);
+
+    void clearCache();
 }

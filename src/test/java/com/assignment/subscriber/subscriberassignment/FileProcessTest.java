@@ -8,12 +8,8 @@ import org.awaitility.Duration;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.SpyBean;
-
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
-
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.awaitility.Awaitility.await;
 
@@ -23,14 +19,13 @@ public class FileProcessTest {
 
     @Autowired
     FileProcess fileProcess;
-    @SpyBean
-    private FileProcess fileProcess1;
+
 
     @Test
     void should_read_the_file_path_from_application_properties_file() {
 
         String actualFilePath = fileProcess.getFilePath();
-        assertThat(actualFilePath).isEqualTo("/home/stats/StudyFolder/subscriber-assignment/src/test/resources/data.json");
+        assertThat(actualFilePath).isEqualTo("/home/stats/StudyFolder/subscriber-assignment/data/data.json");
     }
 
     @Test

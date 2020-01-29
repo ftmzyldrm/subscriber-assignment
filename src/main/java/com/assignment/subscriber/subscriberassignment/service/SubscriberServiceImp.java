@@ -4,6 +4,7 @@ import com.assignment.subscriber.subscriberassignment.model.Subscriber;
 import com.assignment.subscriber.subscriberassignment.model.Subscribers;
 import com.hazelcast.core.HazelcastInstance;
 import com.hazelcast.core.IMap;
+import com.assignment.subscriber.subscriberassignment.exception.SubscriberNotFoundException;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
@@ -36,11 +37,37 @@ public class SubscriberServiceImp implements SubscriberService {
 
     @Override
     public void addToCache(Subscriber subscriber) {
+
         getCache().put(subscriber.getId(), subscriber);
     }
 
     @Override
     public void updateCache(Subscriber subscriber) {
+
+        checkIfSubscriberExistThrowException(subscriber.getId());
         getCache().put(subscriber.getId(), subscriber);
+    }
+
+    @Override
+    public void deleteCache(Long id) {
+
+        checkIfSubscriberExistThrowException(id);
+        getCache().delete(id);
+    }
+
+    @Override
+    public Subscriber getById(Long id) {
+        checkIfSubscriberExistThrowException(id);
+        return getCache().get(id);
+    }
+
+    @Override
+    public void clearCache() {
+        getCache().clear();
+    }
+
+    private void checkIfSubscriberExistThrowException(Long id) {
+        if (!getCache().containsKey(id))
+            throw new SubscriberNotFoundException("Subscriber Not Found!");
     }
 }

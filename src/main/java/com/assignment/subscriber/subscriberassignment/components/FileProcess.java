@@ -4,6 +4,7 @@ import com.assignment.subscriber.subscriberassignment.model.Subscribers;
 import com.assignment.subscriber.subscriberassignment.service.SubscriberService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -17,10 +18,12 @@ import java.util.ArrayList;
 
 @Component
 @Slf4j
+@Getter
 public class FileProcess {
 
     @Value("${data.file.path}")
     private String filePath;
+
 
     private final ObjectMapper mapper;
     private SubscriberService service;
@@ -31,8 +34,9 @@ public class FileProcess {
     }
 
     public String getFilePath() {
-        return this.filePath;
+        return filePath;
     }
+
 
     public <T> Object readFromFile(Class<T> clazz) {
 
@@ -48,7 +52,7 @@ public class FileProcess {
 
     }
 
-    private String pojoToJson(Object object) {
+    public String pojoToJson(Object object) {
         String result = "";
         try {
 
@@ -70,7 +74,7 @@ public class FileProcess {
         try {
             Files.write(Paths.get(filePath), pojoToJson(subscribers).getBytes());
             log.info("the cache content is--> " + pojoToJson(subscribers));
-            log.info(String.format("the cache content is written into file %s", filePath));
+            log.info(String.format("the cache content is written into file %s",filePath));
 
         } catch (IOException e) {
             log.error(String.format("The cache content cannot be written into the file %s", filePath));
