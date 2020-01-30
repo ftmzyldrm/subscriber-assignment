@@ -1,0 +1,7 @@
+30.01.2020 20:31:32 - [/subscriber/getAllSubscribers] [GET] []
+30.01.2020 20:56:54 - [/subscriber] [PUT] [Subscriber(id=8, name=Postman Test 3, msisdn=905552551133)]
+30.01.2020 20:58:03 - [/subscriber] [PUT] [Subscriber(id=9, name=Postman Test 3, msisdn=905552551133)]
+30.01.2020 21:18:09 - [/subscriber] [DELETE] [4]
+30.01.2020 23:21:29 - [/subscriber/{id}] [DELETE] [4]
+30.01.2020 23:21:47 - [/subscriber/getAllSubscribers] [GET] []
+30.01.2020 23:21:53 - [/subscriber/{id}] [DELETE] [4]
