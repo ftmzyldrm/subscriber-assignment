@@ -39,7 +39,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"id\": 8,\n    \"name\": \"Postman Test 3\",\n    \"msisdn\": \"905552551133\"\n}",
+					"raw": "{\n    \"id\": 9,\n    \"name\": \"Postman Test 4\",\n    \"msisdn\": \"905552551133\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -74,7 +74,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"id\": 9,\n    \"name\": \"Postman Test 3\",\n    \"msisdn\": \"905552551133\"\n}",
+					"raw": "{\n    \"id\": 9,\n    \"name\": \"Postman Test Update 9\",\n    \"msisdn\": \"905552551133\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -109,7 +109,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\"id\":4}",
+					"raw": "{\"id\":9}",
 					"options": {
 						"raw": {
 							"language": "json"

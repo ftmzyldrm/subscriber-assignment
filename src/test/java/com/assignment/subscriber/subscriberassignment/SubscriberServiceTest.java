@@ -2,12 +2,12 @@ package com.assignment.subscriber.subscriberassignment;
 
 
 import com.assignment.subscriber.subscriberassignment.components.FileProcess;
+import com.assignment.subscriber.subscriberassignment.model.DeleteRequest;
 import com.assignment.subscriber.subscriberassignment.model.Subscriber;
 import com.assignment.subscriber.subscriberassignment.model.Subscribers;
 import com.assignment.subscriber.subscriberassignment.service.SubscriberService;
 import com.assignment.subscriber.subscriberassignment.exception.SubscriberNotFoundException;
 import org.awaitility.Duration;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -27,29 +27,27 @@ public class SubscriberServiceTest {
     private SubscriberService subscriberService;
 
 
-
-
     @Test
-    void should_add_file_content_into_cache(){
+    void should_add_file_content_into_cache() {
 
         //given:
         //read subsribers from file
-       Subscribers subscribers = readSubscribers();
+        Subscribers subscribers = readSubscribers();
 
-       //when:
+        //when:
         subscriberService.addAllCache(subscribers);
 
-       //then:
+        //then:
         assertThat(subscriberService.getCache()).isNotEmpty();
-        assertThat(subscriberService.getCache().values()).contains(new Subscriber(1L,"Stephan King", "905552551122"));
+        assertThat(subscriberService.getCache().values()).contains(new Subscriber(1L, "Stephan King", "905552551122"));
 
     }
 
     @Test
-    void should_add_a_subscriber_into_cache(){
+    void should_add_a_subscriber_into_cache() {
 
         //given
-        Subscriber subscriber = new Subscriber(4L,"Kobe Byrant","904342323523");
+        Subscriber subscriber = new Subscriber(4L, "Kobe Byrant", "904342323523");
 
         //when
         subscriberService.addToCache(subscriber);
@@ -60,15 +58,15 @@ public class SubscriberServiceTest {
 
 
     @Test
-    void should_update_a_subscriber_of_cache(){
+    void should_update_a_subscriber_of_cache() {
 
         //given:
-        Subscriber subscriber = new Subscriber(5L,"Amy Winehouse","140w324324234");
+        Subscriber subscriber = new Subscriber(5L, "Amy Winehouse", "140w324324234");
 
         subscriberService.addToCache(subscriber);
 
         //when:
-        Subscriber updatedSubscriber = new Subscriber(5L,"Billie Ellish","0254254435435");
+        Subscriber updatedSubscriber = new Subscriber(5L, "Billie Ellish", "0254254435435");
         subscriberService.updateCache(updatedSubscriber);
 
         assertThat(subscriberService.getCache().values()).contains(updatedSubscriber);
@@ -77,7 +75,6 @@ public class SubscriberServiceTest {
 
 
     @Test
-
     void should_update_file_content_accordingto_cron_expression() {
 
         //given:
@@ -89,16 +86,16 @@ public class SubscriberServiceTest {
     }
 
     @Test
-    void should_delete_subscriber_from_cache_ifexists(){
+    void should_delete_subscriber_from_cache_ifexists() {
 
         //given:
-        Subscriber subscriber = new Subscriber(7L,"will be deleted","983-409583-40985");
+        Subscriber subscriber = new Subscriber(7L, "will be deleted", "983-409583-40985");
 
         subscriberService.addToCache(subscriber);
 
-        String inputJson = "{\"id\":7}";
+        DeleteRequest deleteRequest = new DeleteRequest(7L);
         //when:
-        subscriberService.deleteCache(inputJson);
+        subscriberService.deleteCache(deleteRequest.getId());
 
         assertThat(subscriberService.getCache().values()).doesNotContain(subscriber);
 
@@ -106,30 +103,30 @@ public class SubscriberServiceTest {
     }
 
     @Test
-    void should_throw_subscriber_notfound_exception_if_subscriber_is_not_in_cache(){
+    void should_throw_subscriber_notfound_exception_if_subscriber_is_not_in_cache() {
 
         //given:
-        Subscriber subscriber = new Subscriber(7L,"will be deleted","983-409583-40985");
+        Subscriber subscriber = new Subscriber(7L, "will be deleted", "983-409583-40985");
 
         subscriberService.addToCache(subscriber);
 
-        String inputJson = "{\"id\":7}";
+        DeleteRequest deleteRequest = new DeleteRequest(7L);
         //when:
-        subscriberService.deleteCache(inputJson);
+        subscriberService.deleteCache(deleteRequest.getId());
 
         assertThat(subscriberService.getCache().values()).doesNotContain(subscriber);
 
-        SubscriberNotFoundException thrown = assertThrows(SubscriberNotFoundException.class,()->subscriberService.deleteCache(inputJson),"deleteCache expected to throw but it didint");
+        SubscriberNotFoundException thrown = assertThrows(SubscriberNotFoundException.class, () -> subscriberService.deleteCache(deleteRequest.getId()), "deleteCache expected to throw but it didint");
 
         assertTrue(thrown.getMessage().contains("Subscriber Not Found"));
     }
 
 
     @Test
-    void should_get_subscriber_by_id_from_cache(){
+    void should_get_subscriber_by_id_from_cache() {
 
         //given:
-        Subscriber subscriber = new Subscriber(8L,"will be searched","3248-923-73294");
+        Subscriber subscriber = new Subscriber(8L, "will be searched", "3248-923-73294");
         subscriberService.addToCache(subscriber);
 
 
@@ -137,9 +134,6 @@ public class SubscriberServiceTest {
         Subscriber actualSubcriber = subscriberService.getById(subscriber.getId());
 
         assertThat(actualSubcriber).isEqualTo(subscriber);
-
-
-
 
 
     }

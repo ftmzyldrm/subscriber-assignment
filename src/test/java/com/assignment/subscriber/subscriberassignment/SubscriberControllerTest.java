@@ -4,6 +4,7 @@ package com.assignment.subscriber.subscriberassignment;
 import com.assignment.subscriber.subscriberassignment.components.FileProcess;
 import com.assignment.subscriber.subscriberassignment.controller.SubscriberController;
 import com.assignment.subscriber.subscriberassignment.logging.LoggingAspect;
+import com.assignment.subscriber.subscriberassignment.model.DeleteRequest;
 import com.assignment.subscriber.subscriberassignment.model.Subscriber;
 import com.assignment.subscriber.subscriberassignment.model.Subscribers;
 import org.junit.jupiter.api.BeforeEach;
@@ -43,7 +44,7 @@ public class SubscriberControllerTest {
     private static final String SUBSCRIBER_NOT_FOUND = "Subscriber Not Found!";
 
     //to test web request methods like POST, GET, DELETE and PUT  creating a mock server
-    @Autowired
+
     private MockMvc mvc;
 
 
@@ -117,20 +118,22 @@ public class SubscriberControllerTest {
         TestLoggingAspect();
     }
 
-
-    @Test
+@Test
     void should_delete_subscriber_from_cache_and_return_200OK() throws Exception {
 
         //given
-        Subscriber subscriber =newSubscriber();
+        Subscriber subscriber = newSubscriber();
         fileProcess.getService().addToCache(subscriber);
-        String inputJson = "{\"id\":4}";
+        String uri = "/subscriber";
+        DeleteRequest deleteRequest=new DeleteRequest();
+        deleteRequest.setId(4L);
+        String requestBody = fileProcess.pojoToJson(deleteRequest);
 
         //when
-        MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.delete(SUBSCRIBER_URI)
-                    .contentType(MediaType.APPLICATION_JSON_VALUE)
-                    .contentType(inputJson))
-                    .andReturn();
+        MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.delete(uri)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(requestBody))
+                .andReturn();
 
         //then
         int status = mvcResult.getResponse().getStatus();
@@ -143,13 +146,16 @@ public class SubscriberControllerTest {
 
     @Test
     void should_throw_SubscriberNotFoundException_if_subscriber_not_exist_in_cache_when_try_to_delete() throws Exception {
+
+
         //given
-        String inputJson = "{\"id\":4}";
+        DeleteRequest deleteRequest = new DeleteRequest(100L);
+        String inputJson= fileProcess.pojoToJson(deleteRequest);
 
         //when
         MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.delete(SUBSCRIBER_URI)
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .contentType(inputJson))
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(inputJson))
                 .andReturn();
         //then
         int status = mvcResult.getResponse().getStatus();
@@ -212,7 +218,7 @@ public class SubscriberControllerTest {
         String uri2 = "/subscriber/getSubscriberById/6";
 
         //when
-        MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.post(uri)).andReturn();
+        MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.get(uri)).andReturn();
 
         //then
         int status = mvcResult.getResponse().getStatus();
@@ -222,7 +228,7 @@ public class SubscriberControllerTest {
         assertEquals(resultJson, content);
 
         //when
-        MvcResult mvcResult2 = mvc.perform(MockMvcRequestBuilders.post(uri2)).andReturn();
+        MvcResult mvcResult2 = mvc.perform(MockMvcRequestBuilders.get(uri2)).andReturn();
 
         //then
         int status2 = mvcResult2.getResponse().getStatus();
@@ -240,7 +246,7 @@ public class SubscriberControllerTest {
         String uri = "/subscriber/getSubscriberById/4";
 
         //when
-        MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.post(uri)).andReturn();
+        MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.get(uri)).andReturn();
 
         //then
         int status = mvcResult.getResponse().getStatus();

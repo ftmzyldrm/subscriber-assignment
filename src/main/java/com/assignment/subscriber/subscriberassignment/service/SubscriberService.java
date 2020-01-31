@@ -14,7 +14,7 @@ public interface SubscriberService {
 
     void updateCache(Subscriber subscriber);
 
-    void deleteCache(String request) ;
+    void deleteCache(Long id) ;
 
     Subscriber getById(Long id);
 
