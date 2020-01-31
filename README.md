@@ -32,3 +32,8 @@ data.file.path can be assigned to different file path
 
 ./mvnw clean package
 
+# to skip tests 
+clean package -Dmaven.test.skip=true
+#Run 
+mvn spring-boot:run
+
