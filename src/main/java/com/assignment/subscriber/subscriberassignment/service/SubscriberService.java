@@ -4,6 +4,7 @@ import com.assignment.subscriber.subscriberassignment.model.Subscriber;
 import com.assignment.subscriber.subscriberassignment.model.Subscribers;
 import com.hazelcast.core.IMap;
 
+
 public interface SubscriberService {
     void addAllCache(Subscribers subscribers);
 
@@ -13,7 +14,7 @@ public interface SubscriberService {
 
     void updateCache(Subscriber subscriber);
 
-    void deleteCache(Long id);
+    void deleteCache(String request) ;
 
     Subscriber getById(Long id);
 

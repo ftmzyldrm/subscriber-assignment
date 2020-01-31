@@ -96,9 +96,9 @@ public class SubscriberServiceTest {
 
         subscriberService.addToCache(subscriber);
 
-
+        String inputJson = "{\"id\":7}";
         //when:
-        subscriberService.deleteCache(subscriber.getId());
+        subscriberService.deleteCache(inputJson);
 
         assertThat(subscriberService.getCache().values()).doesNotContain(subscriber);
 
@@ -113,13 +113,13 @@ public class SubscriberServiceTest {
 
         subscriberService.addToCache(subscriber);
 
-
+        String inputJson = "{\"id\":7}";
         //when:
-        subscriberService.deleteCache(subscriber.getId());
+        subscriberService.deleteCache(inputJson);
 
         assertThat(subscriberService.getCache().values()).doesNotContain(subscriber);
 
-        SubscriberNotFoundException thrown = assertThrows(SubscriberNotFoundException.class,()->subscriberService.deleteCache(subscriber.getId()),"deleteCache expected to throw but it didint");
+        SubscriberNotFoundException thrown = assertThrows(SubscriberNotFoundException.class,()->subscriberService.deleteCache(inputJson),"deleteCache expected to throw but it didint");
 
         assertTrue(thrown.getMessage().contains("Subscriber Not Found"));
     }

@@ -3,11 +3,10 @@ package com.assignment.subscriber.subscriberassignment.controller;
 import com.assignment.subscriber.subscriberassignment.model.Subscriber;
 import com.assignment.subscriber.subscriberassignment.model.Subscribers;
 import com.assignment.subscriber.subscriberassignment.service.SubscriberService;
+import org.springframework.boot.configurationprocessor.json.JSONException;
+import org.springframework.boot.configurationprocessor.json.JSONObject;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 
@@ -38,10 +37,10 @@ public class SubscriberController {
         return ResponseEntity.ok(subscriber);
 
     }
-    @RequestMapping(value = "/subscriber/{id}",method = DELETE)
-    public ResponseEntity<String> deleteSubscriber(@PathVariable("id") Long id){
+    @RequestMapping(value = "/subscriber" ,method = DELETE)
+    public ResponseEntity<String> deleteSubscriber(@RequestBody String deleteObj){
 
-        subscriberService.deleteCache(id);
+        subscriberService.deleteCache(deleteObj);
         return ResponseEntity.ok("Subscriber is deleted successfully");
 
     }
@@ -51,7 +50,7 @@ public class SubscriberController {
         return ResponseEntity.ok(new Subscribers(new ArrayList<>(subscriberService.getCache().values())));
     }
 
-    @RequestMapping(value="/subscriber/getSubscriberById/{id}",method=POST)
+    @RequestMapping(value="/subscriber/getSubscriberById/{id}",method=GET)
     public ResponseEntity<Subscriber> getSubscriberById(@PathVariable("id") Long id) {
         Subscriber subscriber=subscriberService.getById(id);
         return ResponseEntity.ok(subscriber);

@@ -34,9 +34,6 @@ public class SubscriberControllerTest {
     @Autowired
     private FileProcess fileProcess;
     @Autowired
-    private SubscriberController subscriberController;
-
-    @Autowired
     private LoggingAspect loggingAspect;
     @Autowired
     private WebApplicationContext webApplicationContext;
@@ -127,10 +124,13 @@ public class SubscriberControllerTest {
         //given
         Subscriber subscriber =newSubscriber();
         fileProcess.getService().addToCache(subscriber);
-        String uri = "/subscriber/4";
+        String inputJson = "{\"id\":4}";
 
         //when
-        MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.delete(uri)).andReturn();
+        MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.delete(SUBSCRIBER_URI)
+                    .contentType(MediaType.APPLICATION_JSON_VALUE)
+                    .contentType(inputJson))
+                    .andReturn();
 
         //then
         int status = mvcResult.getResponse().getStatus();
@@ -144,11 +144,13 @@ public class SubscriberControllerTest {
     @Test
     void should_throw_SubscriberNotFoundException_if_subscriber_not_exist_in_cache_when_try_to_delete() throws Exception {
         //given
-        String uri = "/subscriber/1";
+        String inputJson = "{\"id\":4}";
 
         //when
-        MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.delete(uri)).andReturn();
-
+        MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.delete(SUBSCRIBER_URI)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .contentType(inputJson))
+                .andReturn();
         //then
         int status = mvcResult.getResponse().getStatus();
         assertEquals(404, status);
@@ -162,7 +164,7 @@ public class SubscriberControllerTest {
     void should_get_all_subscribers_from_cache() throws Exception {
         //given
         Subscriber subscriber = newSubscriber();
-        Subscriber subscriber1 = new Subscriber(6L, "murtaza", "905146546525");
+        Subscriber subscriber1 = new Subscriber(6L, "New Subscriber", "905146546525");
         fileProcess.getService().addToCache(subscriber);
         fileProcess.getService().addToCache(subscriber1);
         String uri = "/subscriber/getAllSubscribers";
@@ -203,7 +205,7 @@ public class SubscriberControllerTest {
 
         //given
         Subscriber subscriber = newSubscriber();
-        Subscriber subscriber1 = new Subscriber(6L, "murtaza", "905146546525");
+        Subscriber subscriber1 = new Subscriber(6L, "new Subscriber2", "905146546525");
         fileProcess.getService().addToCache(subscriber);
         fileProcess.getService().addToCache(subscriber1);
         String uri = "/subscriber/getSubscriberById/4";

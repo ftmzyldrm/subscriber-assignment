@@ -6,6 +6,8 @@ import com.hazelcast.core.HazelcastInstance;
 import com.hazelcast.core.IMap;
 import com.assignment.subscriber.subscriberassignment.exception.SubscriberNotFoundException;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.boot.configurationprocessor.json.JSONException;
+import org.springframework.boot.configurationprocessor.json.JSONObject;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -49,8 +51,8 @@ public class SubscriberServiceImp implements SubscriberService {
     }
 
     @Override
-    public void deleteCache(Long id) {
-
+    public void deleteCache(String request) {
+        Long id = checkIfRequestIsValid(request);
         checkIfSubscriberExistThrowException(id);
         getCache().delete(id);
     }
@@ -69,5 +71,18 @@ public class SubscriberServiceImp implements SubscriberService {
     private void checkIfSubscriberExistThrowException(Long id) {
         if (!getCache().containsKey(id))
             throw new SubscriberNotFoundException("Subscriber Not Found!");
+    }
+
+    private Long checkIfRequestIsValid(String request)  {
+        Long id= null;
+        try {
+            JSONObject object= new JSONObject(request);
+            id= object.getLong("id");
+        } catch (JSONException e) {
+            e.printStackTrace();
+
+        }
+        return id;
+
     }
 }
